@@ -2,6 +2,8 @@
 extends EditorPlugin
 class_name SteamLocaleMapper
 
+## Steam API languages as listed [url=https://partner.steamgames.com/doc/store/localization/languages]here[/url],
+## mapped to the corresponding language name, Godot locale key, and fallback Godot locale key.
 const _steam_lookup = {
 	'arabic': ['Arabic', 'ar', 'ar'],
 	'bulgarian': ['Bulgarian', 'bg', 'bg'],
@@ -41,14 +43,30 @@ func _enter_tree():
 func _exit_tree():
 	pass
 
+## Get the Steam language name from the language key.
+##
+## Example: 'brazilian' -> 'Portuguese-Brazil'
 static func getSteamLanguageName(language_key: String) -> String:
 	language_key = language_key.to_lower()
 	return _steam_lookup[language_key][0] if language_key in _steam_lookup else null
 
+## Get the Godot locale key from a Steam language key.
+##
+## Example: 'english' -> 'en' or 'brazilian' -> 'pt_BR'
+##
+## For GodotSteam, the locale can be set as follows:
+## [codeblock lang=gdscript]
+## var steam_language = Steam.getCurrentGameLanguage()
+## var locale = SteamLocaleMapper.mapSteamLanguageKeyToLocale(steam_language)
+## TranslationServer.set_locale(locale)
+## [/codeblock]
 static func mapSteamLanguageKeyToLocale(language_key: String) -> String:
 	language_key = language_key.to_lower()
 	return _steam_lookup[language_key][1] if language_key in _steam_lookup else null
 
+## Get the Godot fallback locale key from a Steam language key.
+##
+## Example: 'brazilian' -> 'pt' instead of 'pt_BR'
 static func mapSteamLanguageKeyToFallbackLocale(language_key: String) -> String:
 	language_key = language_key.to_lower()
 	return _steam_lookup[language_key][2] if language_key in _steam_lookup else null

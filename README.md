@@ -16,3 +16,7 @@ var steam_language = Steam.getCurrentGameLanguage()
 var locale = SteamLocaleMapper.mapSteamLanguageKeyToLocale(steam_language)
 TranslationServer.set_locale(locale)
 ```
+
+In case a specific locale is not added to the Godot project, such as brazilian ("pt_BR"), an
+additional function "mapSteamLanguageKeyToFallbackLocale" allows the retrieval of a fallback locale,
+in this case "pt".
